@@ -17,6 +17,7 @@
 	<div class="col-sm-12">
 	  <div class="form-group">
 	  	<div class="col-sm-2">
+	  	  <!-- ボタン表示 -->
 	      <form th:action="@{/cleaning_rota/switch_button}" method="get">
 	        <input type="submit" class="btn btn-default btn-xs" value="ボタン切り替え" />
 	        <input type="hidden" name="showButton" th:value="${showButton}" />
