@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/webjars/**", "/css/**");
+		web.ignoring().antMatchers("/webjars/**", "/css/**", "/js/**");
 	}
 	
 	protected void configure(HttpSecurity http) throws Exception {
@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginProcessingUrl("/login")
 			.loginPage("/loginForm")
 			.failureUrl("/loginForm?error")
-			.defaultSuccessUrl("/cleaning_rota?showButton=true", true)
+			.defaultSuccessUrl("/cleaning_rota", true)
 			.usernameParameter("user_id")
 			.passwordParameter("password")
 			.and()

@@ -39,10 +39,10 @@ public class CleaningRotaController {
 	 * @return
 	 */
 	@GetMapping
-	public String cleaningRota(@RequestParam boolean showButton, Model model) {
+	public String cleaningRota(Model model) {
 		
 		// ボタン表示
-		model.addAttribute("showButton", showButton);
+		model.addAttribute("showButton", true);
 		
 		// 掃除当番表項目リスト
 		List<Item> items = itemService.findAll();
@@ -58,12 +58,6 @@ public class CleaningRotaController {
 				
 		// ページ遷移
 		return "cleaning_rota/cleaning_rota";
-	}
-	
-	@GetMapping(path = "switch_button")
-	public String switchButton(@RequestParam boolean showButton, Model model) {
-		showButton = !showButton;
-		return "redirect:/cleaning_rota?showButton=" + showButton;
 	}
 	
 	/**
