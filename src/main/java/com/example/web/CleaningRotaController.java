@@ -1,7 +1,6 @@
 package com.example.web;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +38,10 @@ public class CleaningRotaController {
 	 * @return
 	 */
 	@GetMapping
-	public String cleaningRota(Model model) {
+	public String cleaningRota(@RequestParam String executedDate, Model model) {
 		
-		// ボタン表示
-		model.addAttribute("showButton", true);
+		// 年月設定
+		model.addAttribute("executedDate", executedDate);
 		
 		// 掃除当番表項目リスト
 		List<Item> items = itemService.findAll();
@@ -50,7 +49,8 @@ public class CleaningRotaController {
 		
 		// 掃除当番表記録リスト
 		CleaningRecord cleaningRecord = new CleaningRecord();
-		cleaningRecord.setExecutedDate(LocalDate.now());
+		cleaningRecord.setExecutedDate(LocalDate.parse(executedDate, 
+				DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		List<CleaningRecord> cleaningRecords = cleaningRecordService.findAllByExecutedDate(cleaningRecord);
 		Map<LocalDate, Map<Item, CleaningRecord>> cleaningRecordMap = CreateMapUtil.createCleaningRecordMap(
 				cleaningRecords, cleaningRecord, items);
@@ -58,6 +58,36 @@ public class CleaningRotaController {
 				
 		// ページ遷移
 		return "cleaning_rota/cleaning_rota";
+	}
+	
+	/**
+	 * 前月表示
+	 * @param executedDate
+	 * @return
+	 */
+	@PostMapping(path = "beforeMonth")
+	public String showBeforeMonthCleaningRota(@RequestParam String executedDate) {
+		
+		LocalDate localDate = LocalDate.parse(executedDate, 
+				DateTimeFormatter.ofPattern("yyyy-MM-dd")).minusMonths(1);
+		
+		// ページ遷移
+		return "redirect:/cleaning_rota?executedDate=" + localDate;
+	}
+	
+	/**
+	 * 次月表示
+	 * @param executedDate
+	 * @return
+	 */
+	@PostMapping(path = "afterMonth")
+	public String showAfterMonthCleaningRota(@RequestParam String executedDate) {
+		
+		LocalDate localDate = LocalDate.parse(executedDate, 
+				DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusMonths(1);
+		
+		// ページ遷移
+		return "redirect:/cleaning_rota?executedDate=" + localDate;
 	}
 	
 	/**
@@ -86,7 +116,7 @@ public class CleaningRotaController {
 		cleaningRecordService.create(cleaningRecord);
 		
 		// ページ遷移
-		return "redirect:/cleaning_rota";
+		return "redirect:/cleaning_rota?executedDate=" + executedDate;
 	}
 	
 	/**
@@ -95,13 +125,13 @@ public class CleaningRotaController {
 	 * @return
 	 */
 	@PostMapping(path = "physical_delete")
-	public String physicalDelete(@RequestParam Integer recordId) {
+	public String physicalDelete(@RequestParam String executedDate, @RequestParam Integer recordId) {
 		
 		CleaningRecord cleaningRecord = new CleaningRecord();
 		cleaningRecord.setRecordId(recordId);
 		cleaningRecordService.physicalDelete(cleaningRecord);
 		
-		return "redirect:/cleaning_rota";
+		return "redirect:/cleaning_rota?executedDate=" + executedDate;
 	}
 
 }

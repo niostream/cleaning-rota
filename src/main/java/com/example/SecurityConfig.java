@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginProcessingUrl("/login")
 			.loginPage("/loginForm")
 			.failureUrl("/loginForm?error")
-			.defaultSuccessUrl("/cleaning_rota", true)
+			.defaultSuccessUrl("/cleaning_rota?executedDate=" + LocalDate.now(), true)
 			.usernameParameter("user_id")
 			.passwordParameter("password")
 			.and()
