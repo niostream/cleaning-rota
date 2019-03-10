@@ -8,6 +8,7 @@ public enum FlagEnum {
 	/** ON */
 	FLAG_ON(1);
 	
+	/** フラグ */
 	private int flag;
 	
 	/**
@@ -18,6 +19,10 @@ public enum FlagEnum {
 		this.flag = flag;
 	}
 
+	/**
+	 * フラグ取得
+	 * @return フラグ
+	 */
 	public int getFlag() {
 		return flag;
 	}

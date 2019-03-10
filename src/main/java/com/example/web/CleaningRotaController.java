@@ -57,7 +57,7 @@ public class CleaningRotaController {
 		model.addAttribute("cleaningRecordMap", cleaningRecordMap);
 				
 		// ページ遷移
-		return "cleaning_rota/cleaning_rota";
+		return "cleaning_rota/cleaning_rota";	
 	}
 	
 	/**
@@ -68,6 +68,7 @@ public class CleaningRotaController {
 	@PostMapping(path = "beforeMonth")
 	public String showBeforeMonthCleaningRota(@RequestParam String executedDate) {
 		
+		// 前月設定
 		LocalDate localDate = LocalDate.parse(executedDate, 
 				DateTimeFormatter.ofPattern("yyyy-MM-dd")).minusMonths(1);
 		
@@ -83,6 +84,7 @@ public class CleaningRotaController {
 	@PostMapping(path = "afterMonth")
 	public String showAfterMonthCleaningRota(@RequestParam String executedDate) {
 		
+		// 次月設定
 		LocalDate localDate = LocalDate.parse(executedDate, 
 				DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusMonths(1);
 		
@@ -116,7 +118,7 @@ public class CleaningRotaController {
 		cleaningRecordService.create(cleaningRecord);
 		
 		// ページ遷移
-		return "redirect:/cleaning_rota?executedDate=" + executedDate;
+		return "redirect:/cleaning_rota?executedDate=" + executedDate;	
 	}
 	
 	/**
@@ -127,11 +129,13 @@ public class CleaningRotaController {
 	@PostMapping(path = "physical_delete")
 	public String physicalDelete(@RequestParam String executedDate, @RequestParam Integer recordId) {
 		
+		// 掃除当番表レコード論理削除
 		CleaningRecord cleaningRecord = new CleaningRecord();
 		cleaningRecord.setRecordId(recordId);
 		cleaningRecordService.physicalDelete(cleaningRecord);
 		
-		return "redirect:/cleaning_rota?executedDate=" + executedDate;
+		// ページ遷移
+		return "redirect:/cleaning_rota?executedDate=" + executedDate;		
 	}
 
 }

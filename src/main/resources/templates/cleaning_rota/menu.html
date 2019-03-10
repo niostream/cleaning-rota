@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>メニュー</title>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.min.css}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>メニュー</h1>
+<!--     <p> -->
+<!-- 	  <span sec:authentication="principal.user.userId">姓</span>&nbsp;<span sec:authentication="principal.user.lastname">名</span>さんログイン中。 -->
+<!-- 	</p> -->
+    <div class="col-sm-12">
+      <div class="form-group">
+        <div class="col-sm-2">
+	      <form th:action="@{/menu/cleaning_rota}" method="post">
+   	  	    <input class="btn btn-primary btn-sm" type="submit" name="form" value="掃除当番表" />
+		  </form>
+  	    </div>
+  	    <div class="col-sm-2">
+	      <form th:action="@{/menu/change_password}" method="post">
+   	   	    <input class="btn btn-primary btn-sm" type="submit" name="form" value="パスワード変更" />
+		  </form>
+  	    </div>
+  	    <div class="col-sm-2">
+	      <form th:action="@{/menu/regist_user}" method="post">
+   	  	    <input class="btn btn-primary btn-sm" type="submit" name="form" value="ユーザー登録" />
+		  </form>
+  	    </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
