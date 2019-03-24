@@ -37,13 +37,14 @@ public class CreateMapUtil {
 		// 掃除当番表レコードマップ生成
 		Map<LocalDate, Map<Item, CleaningRecord>> cleaningRecordMap = new LinkedHashMap<>();
 		for (LocalDate date : monthList) {
-			// 
+			// Item項目設定
 			Map<Item, CleaningRecord> itemMap = new LinkedHashMap<>();
 			for (Item item : items) {
 				itemMap.put(item, null);
 			}
 			cleaningRecordMap.put(date, itemMap);
 			
+			// 掃除当番表レコード設定
 			for (CleaningRecord record : cleaningRecords) {
 				if (date.equals(record.getExecutedDate())) {
 					Map<Item, CleaningRecord> itemMap2 = cleaningRecordMap.get(date);
@@ -60,35 +61,35 @@ public class CreateMapUtil {
 		return cleaningRecordMap;
 	}
 	
-	public static Map<LocalDate, List<CleaningRecord>> createCleaningRecordMap3(
-			List<CleaningRecord> cleaningRecords, CleaningRecord cleaningRecord) {
-		
-		// 当月一覧日付取得
-		List<LocalDate> monthList = Stream.iterate(LocalDate.of(cleaningRecord.getExecutedDate().getYear(),
-				cleaningRecord.getExecutedDate().getMonth(), 1), x -> x.plusDays(1))
-                .limit(cleaningRecord.getExecutedDate().lengthOfMonth())
-                .collect(Collectors.toList());
-		
-		// 掃除当番表レコードマップ生成
-		Map<LocalDate, List<CleaningRecord>> cleaningRecordMap = new LinkedHashMap<>();
-		for (LocalDate date : monthList) {
-			cleaningRecordMap.put(date, new ArrayList<>());
-		}
-		
-		// 掃除当番表記録があるデータを設定
-		for (LocalDate date : monthList) {
-			for (CleaningRecord record : cleaningRecords) {
-				if (date.equals(record.getExecutedDate())) {
-					if (cleaningRecordMap.containsKey(date)) {
-						List<CleaningRecord> mapRecord = cleaningRecordMap.get(date);
-						mapRecord.add(record);
-						cleaningRecordMap.put(date, mapRecord);
-					} 
-				}
-			}
-		}
-		
-		return cleaningRecordMap;
-	}
+//	public static Map<LocalDate, List<CleaningRecord>> createCleaningRecordMap3(
+//			List<CleaningRecord> cleaningRecords, CleaningRecord cleaningRecord) {
+//		
+//		// 当月一覧日付取得
+//		List<LocalDate> monthList = Stream.iterate(LocalDate.of(cleaningRecord.getExecutedDate().getYear(),
+//				cleaningRecord.getExecutedDate().getMonth(), 1), x -> x.plusDays(1))
+//                .limit(cleaningRecord.getExecutedDate().lengthOfMonth())
+//                .collect(Collectors.toList());
+//		
+//		// 掃除当番表レコードマップ生成
+//		Map<LocalDate, List<CleaningRecord>> cleaningRecordMap = new LinkedHashMap<>();
+//		for (LocalDate date : monthList) {
+//			cleaningRecordMap.put(date, new ArrayList<>());
+//		}
+//		
+//		// 掃除当番表記録があるデータを設定
+//		for (LocalDate date : monthList) {
+//			for (CleaningRecord record : cleaningRecords) {
+//				if (date.equals(record.getExecutedDate())) {
+//					if (cleaningRecordMap.containsKey(date)) {
+//						List<CleaningRecord> mapRecord = cleaningRecordMap.get(date);
+//						mapRecord.add(record);
+//						cleaningRecordMap.put(date, mapRecord);
+//					} 
+//				}
+//			}
+//		}
+//		
+//		return cleaningRecordMap;
+//	}
 
 }

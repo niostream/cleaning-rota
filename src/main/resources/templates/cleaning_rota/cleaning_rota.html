@@ -5,6 +5,7 @@
 <title>掃除当番表</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.min.css}">
+<!-- <link rel="stylesheet" href="/css/common.css" th:href="@{/css/common.css}"> -->
 <link rel="stylesheet" href="/css/cleaning_rota.css" th:href="@{/css/cleaning_rota.css}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
@@ -21,7 +22,18 @@
 	  	<div class="col-sm pull-left">
 		  <input type="button" class="btn btn-default btn-xs" value="ボタン切り替え" id="switchButton"/>
 	    </div>
-	    <div class="col-sm pull-right">
+	    <div class="col-sm-offset-1 col-sm pull-left ">
+	      <form th:action="@{/cleaning_rota/output}" method="get">
+	        <input type="submit" class="btn btn-default btn-xs" value="Excel出力" />
+	        <input type="hidden" name="executedDate" th:value="${executedDate}" />
+	      </form>
+	    </div>
+	    <div class="col-sm-offset-1 col-sm pull-left">
+		  <form th:action="@{/cleaning_rota/navi}" method="post">
+		    <input type="submit" class="btn btn-default btn-xs" name="goToMenu" value="戻る" />
+		  </form>
+		</div>
+	    <div class="col-sm-offset-1 col-sm pull-left">
 	      <form th:action="@{/logout}" method="post">
 	        <input type="submit" class="btn btn-default btn-xs" value="ログアウト" />
 	      </form>
