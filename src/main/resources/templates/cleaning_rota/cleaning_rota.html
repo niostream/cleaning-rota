@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
 <script src="/js/cleaning_rota.js" th:src="@{/js/cleaning_rota.js}"></script>
+
 </head>
 <body>
   <div class="container">
@@ -126,21 +127,21 @@
 	
     </div>
     <div class="col-sm-12">
-	  <div class="form-group">
-	    <div class="col-sm-2 pull-left col-md-offset-1">
-	      <form th:action="@{/cleaning_rota/beforeMonth}" method="post">
-	        <input type="submit" class="btn btn-default btn-xs" value="前月" />
-	        <input type="hidden" name="executedDate" th:value="${executedDate}" />
-	      </form>
+	    <div class="form-group">
+	      <div class="col-sm-2 pull-left col-md-offset-1">
+	        <form th:action="@{/cleaning_rota/beforeMonth}" method="post">
+	          <input type="submit" class="btn btn-default btn-xs" value="前月" />
+	          <input type="hidden" name="executedDate" th:value="${executedDate}" />
+	        </form>
+	      </div>
+	      <div class="col-sm-2 pull-right col-md-offset-1">
+	        <form th:action="@{/cleaning_rota/afterMonth}" method="post">
+	          <input type="submit" class="btn btn-default btn-xs" value="次月" />
+	          <input type="hidden" name="executedDate" th:value="${executedDate}" />
+	        </form>
+	      </div>
 	    </div>
-	    <div class="col-sm-2 pull-right col-md-offset-1">
-	      <form th:action="@{/cleaning_rota/afterMonth}" method="post">
-	        <input type="submit" class="btn btn-default btn-xs" value="次月" />
-	        <input type="hidden" name="executedDate" th:value="${executedDate}" />
-	      </form>
-	    </div>
-	  </div>
-	</div>
+  	</div>
   </div>
 </body>
 </html>

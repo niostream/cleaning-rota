@@ -47,6 +47,7 @@ public class CleaningRotaController {
 	 * @return 掃除当番表画面
 	 */
 	@GetMapping
+
 	public String cleaningRota(@RequestParam String executedDate, Model model,
 			@AuthenticationPrincipal LoginUserDetails userDetails) {
 		
@@ -145,7 +146,7 @@ public class CleaningRotaController {
 		return "redirect:/cleaning_rota?executedDate=" + localDate;
 		
 	}
-	
+
 	/**
 	 * 登録ボタンクリック
 	 * @param executedDate 実行日
