@@ -9,7 +9,11 @@ import com.example.domain.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 	
-	@Query("SELECT i FROM Item i WHERE i.deleteFlag = 0 ORDER BY i.itemId")
-	public List<Item> findAll();
+	@Query("SELECT "
+			+ "i "
+			+ "FROM Item i "
+			+ "WHERE i.deleteFlag = 0 "
+			+ "ORDER BY i.itemId")
+	List<Item> findAll();
 
 }

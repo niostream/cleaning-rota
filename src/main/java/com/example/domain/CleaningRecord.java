@@ -1,6 +1,5 @@
 package com.example.domain;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -21,29 +20,34 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CleaningRecord implements Serializable {
+public class CleaningRecord {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+	/** レコードID */
 	@Id
 	@GeneratedValue
 	private Integer recordId;
 	
+	/** 削除フラグ */
 	@Column(nullable = false)
 	private Integer deleteFlag;
 	
+	/** 実行日 */
 	@Column(nullable = false)
 	private LocalDate executedDate;
 	
+	/** アイテムID(:Item) */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false, name = "itemId")
 	private Item item;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	/** ユーザーID(:User) */
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "userId")
 	private User user;
+	
+	/** 寮ID(:Dormitory) */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false, name = "dormitoryId")
+	private Dormitory crDormitory;
 
 }

@@ -26,7 +26,8 @@ public class CleaningRecordService {
 	}
 	
 	public List<CleaningRecord> findAllByExecutedDate(CleaningRecord cleaningRecord) {
-		return cleaningRecordRepository.findAllByExecutedDate(cleaningRecord.getExecutedDate());
+		return cleaningRecordRepository.findAllByExecutedDate(cleaningRecord.getExecutedDate(),
+				cleaningRecord.getCrDormitory().getDormitoryId());
 	}
 	
 	public Optional<CleaningRecord> findById(Integer id) {
