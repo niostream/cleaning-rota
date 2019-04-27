@@ -22,16 +22,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Item {
 	
+	/** アイテムID */
 	@Id
 	@GeneratedValue
 	private Integer itemId;
 	
+	/** 削除フラグ */
 	@Column(nullable = false)
 	private Integer deleteFlag;
 	
+	/** アイテム名 */
 	@Column(nullable = false)
 	private String itemName;
 	
+	/** アイテムID(:CleaningRecord) */
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
 	private List<CleaningRecord> cleaningRecords;
 

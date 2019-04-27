@@ -20,8 +20,10 @@ public interface CleaningRecordRepository extends JpaRepository<CleaningRecord, 
 			+ "AND MONTH(cr.executedDate) = MONTH(:executedDate) "
 			+ "AND cr.deleteFlag = 0 "
 			+ "AND cr.item.deleteFlag = 0 "
+			+ "AND cr.crDormitory.dormitoryId = :dormitoryId "
 			+ "ORDER BY cr.executedDate, cr.item.itemId ")
-	List<CleaningRecord> findAllByExecutedDate(@Param("executedDate") LocalDate executedDate);
+	List<CleaningRecord> findAllByExecutedDate(@Param("executedDate") LocalDate executedDate,
+			@Param("dormitoryId") Integer dormitoryId);
 	
 	@Transactional
 	@Modifying

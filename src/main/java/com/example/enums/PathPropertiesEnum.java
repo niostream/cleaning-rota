@@ -2,7 +2,7 @@ package com.example.enums;
 
 public enum PathPropertiesEnum {
 	
-	/** Excel出力ファイルパス */
+	/** 掃除当番表出力ファイルパス */
 	OUTPUT_CLEANING_ROTA_FILE_PATH("output-cleaning-rota-file-path");
 	
 	/** パス */

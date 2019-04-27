@@ -10,7 +10,12 @@ import com.example.domain.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
 	
-	@Query("SELECT u FROM User u WHERE u.userId = :userId AND u.deleteFlag = 0")
-	public Optional<User> findByUserId(@Param("userId") String userId);
+	@Query("SELECT "
+			+ "u "
+			+ "FROM User u "
+			+ "WHERE u.userId = :userId "
+			+ "AND u.deleteFlag = 0 "
+			+ "AND u.userDormitory.deleteFlag = 0")
+	Optional<User> findByUserId(@Param("userId") String userId);
 
 }

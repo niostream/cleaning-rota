@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.domain.CleaningRecord;
+import com.example.domain.Dormitory;
 import com.example.domain.Item;
 import com.example.enums.FlagEnum;
 import com.example.service.CleaningRecordService;
+import com.example.service.DormitoryService;
 import com.example.service.ItemService;
 import com.example.service.LoginUserDetails;
 import com.example.util.CreateMapUtil;
@@ -33,19 +36,24 @@ public class CleaningRotaController {
 	@Autowired
 	ItemService itemService;
 	
+	@Autowired
+	DormitoryService dormitoryService;
+	
 	/**
 	 * 掃除当番表画面表示
 	 * @param executedDate 実行日
 	 * @param model モデル
+	 * @param userDetails ログインユーザー情報
 	 * @return 掃除当番表画面
 	 */
 	@GetMapping
-	public String cleaningRota(@RequestParam String executedDate, Model model) {
+	public String cleaningRota(@RequestParam String executedDate, Model model,
+			@AuthenticationPrincipal LoginUserDetails userDetails) {
 		
 		// 実行日設定
 		model.addAttribute("executedDate", executedDate);
 		
-		// 掃除当番表項目リスト
+		// 掃除当番表アイテムリスト
 		List<Item> items = itemService.findAll();
 		model.addAttribute("items", items);
 		
@@ -53,40 +61,46 @@ public class CleaningRotaController {
 		CleaningRecord cleaningRecord = new CleaningRecord();
 		cleaningRecord.setExecutedDate(LocalDate.parse(executedDate, 
 				DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		cleaningRecord.setCrDormitory(userDetails.getUser().getUserDormitory());
 		List<CleaningRecord> cleaningRecords = cleaningRecordService.findAllByExecutedDate(cleaningRecord);
 		Map<LocalDate, Map<Item, CleaningRecord>> cleaningRecordMap = CreateMapUtil.createCleaningRecordMap(
 				cleaningRecords, cleaningRecord, items);
 		model.addAttribute("cleaningRecordMap", cleaningRecordMap);
 				
 		// ページ遷移
-		return "cleaning_rota/cleaning_rota";	
+		return "cleaning_rota/cleaning_rota";
+		
 	}
 	
 	/**
-	 * Excel出力
+	 * 掃除当番表Excel出力
 	 * @param executedDate 実行日
+	 * @param userDetails ログインユーザー情報
 	 * @return 掃除当番表表示機能
 	 */
 	@GetMapping(path = "output")
-	public String outputCleaningRota(@RequestParam String executedDate) {
+	public String outputCleaningRota(@RequestParam String executedDate,
+			@AuthenticationPrincipal LoginUserDetails userDetails) {
 		
-		// 掃除当番表項目リスト
+		// 掃除当番表アイテムリスト
 		List<Item> items = itemService.findAll();
 		
 		// 掃除当番表記録マップ
 		CleaningRecord cleaningRecord = new CleaningRecord();
 		cleaningRecord.setExecutedDate(LocalDate.parse(executedDate, 
 				DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		Optional<Dormitory> dormitory = dormitoryService.findByDormitoryId(userDetails.getUser().getUserDormitory().getDormitoryId());
+		cleaningRecord.setCrDormitory(dormitory.get());
 		List<CleaningRecord> cleaningRecords = cleaningRecordService.findAllByExecutedDate(cleaningRecord);
 		Map<LocalDate, Map<Item, CleaningRecord>> cleaningRecordMap = CreateMapUtil.createCleaningRecordMap(
 				cleaningRecords, cleaningRecord, items);
 		
-		// Excel出力
-		OutputCleaningRota.output(items, cleaningRecordMap, LocalDate.parse(executedDate, 
-				DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		// 掃除当番表Excel出力
+		OutputCleaningRota.output(items, cleaningRecordMap, cleaningRecord);
 		
 		// ページ遷移
 		return "redirect:/cleaning_rota?executedDate=" + executedDate;
+		
 	}
 	
 	/**
@@ -112,6 +126,7 @@ public class CleaningRotaController {
 		
 		// ページ遷移
 		return "redirect:/cleaning_rota?executedDate=" + localDate;
+		
 	}
 	
 	/**
@@ -128,13 +143,14 @@ public class CleaningRotaController {
 		
 		// ページ遷移
 		return "redirect:/cleaning_rota?executedDate=" + localDate;
+		
 	}
 	
 	/**
 	 * 登録ボタンクリック
 	 * @param executedDate 実行日
-	 * @param itemId 項目ID
-	 * @param userDetails ユーザー情報
+	 * @param itemId アイテムID
+	 * @param userDetails ログインユーザー情報
 	 * @return 掃除当番表表示機能
 	 */
 	@PostMapping(path = "regist")
@@ -152,11 +168,13 @@ public class CleaningRotaController {
 		Item item = new Item();
 		item.setItemId(itemId);
 		cleaningRecord.setItem(item);
-		cleaningRecord.setUser(userDetails.getUser());
+		cleaningRecord.setUser(userDetails.getUser());	
+		cleaningRecord.setCrDormitory(userDetails.getUser().getUserDormitory());
 		cleaningRecordService.create(cleaningRecord);
 		
 		// ページ遷移
-		return "redirect:/cleaning_rota?executedDate=" + executedDate;	
+		return "redirect:/cleaning_rota?executedDate=" + executedDate;
+		
 	}
 	
 	/**
@@ -173,7 +191,8 @@ public class CleaningRotaController {
 		cleaningRecordService.physicalDelete(cleaningRecord);
 		
 		// ページ遷移
-		return "redirect:/cleaning_rota?executedDate=" + executedDate;		
+		return "redirect:/cleaning_rota?executedDate=" + executedDate;
+		
 	}
 	
 }

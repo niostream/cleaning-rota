@@ -31,11 +31,12 @@ public class OutputCleaningRota {
 	
 	/**
 	 * Excel出力
-	 * @param items 項目リスト
+	 * @param items アイテムリスト
 	 * @param cleaningRecordMap 掃除当番表記録マップ
+	 * @param cleaningRecord 掃除当番表レコード
 	 */
 	public static void output(List<Item> items, Map<LocalDate, Map<Item, CleaningRecord>> cleaningRecordMap,
-			LocalDate localDate) {
+			CleaningRecord cleaningRecord) {
 		
 		// ファイル生成
 		Workbook outputWorkbook = new XSSFWorkbook();
@@ -53,8 +54,9 @@ public class OutputCleaningRota {
 		// ヘッダー作成
 		Row row = outputSheet.createRow(0);
 		Cell cell = row.createCell(0);
-		cell.setCellValue(localDate.getYear() + "年" + localDate.getMonthValue() + "月"
-				+ " マンション名：クレール・ド・ジュール  部屋番号:201");
+		cell.setCellValue(cleaningRecord.getExecutedDate().getYear() + "年"
+				+ cleaningRecord.getExecutedDate().getMonthValue() + "月 "
+		        + cleaningRecord.getCrDormitory().getDormitoryDetail());
 		
 		// テーブルヘッダー作成
 		row = outputSheet.createRow(2);
@@ -66,13 +68,13 @@ public class OutputCleaningRota {
 		
 		// テーブルボディ作成
 		int rowIndex = 3;
-		for (Entry<LocalDate, Map<Item, CleaningRecord>> entry : cleaningRecordMap.entrySet()) {
+		for (Entry<LocalDate, Map<Item, CleaningRecord>> executedDateEntry : cleaningRecordMap.entrySet()) {
 			row = outputSheet.createRow(rowIndex++);
-			row.createCell(0).setCellValue(entry.getKey().toString());
-			for (Entry<Item, CleaningRecord> entry2 : entry.getValue().entrySet()) {
-				if (entry2.getValue() != null) {
-					row.createCell(entry2.getKey().getItemId()).setCellValue(
-							entry2.getValue().getUser().getFirstName());
+			row.createCell(0).setCellValue(executedDateEntry.getKey().toString());
+			for (Entry<Item, CleaningRecord> itemEntry : executedDateEntry.getValue().entrySet()) {
+				if (itemEntry.getValue() != null) {
+					row.createCell(itemEntry.getKey().getItemId()).setCellValue(
+							itemEntry.getValue().getUser().getFirstName());
 				}
 			}
 		}
@@ -82,12 +84,14 @@ public class OutputCleaningRota {
 		try {
 			out = new FileOutputStream(ResourceBundle.getBundle(PropertiesEnum.PATH.getFileName())
 					.getString(PathPropertiesEnum.OUTPUT_CLEANING_ROTA_FILE_PATH.getPath())
-					+ "東京寮担当表_" + localDate.getYear() + "年" + localDate.getMonthValue()
-					+ "月_クレール・ド・ジュール.xlsx");
+					+ "東京寮担当表_" + cleaningRecord.getExecutedDate().getYear() + "年"
+					+ cleaningRecord.getExecutedDate().getMonthValue() + "月_"
+					+ cleaningRecord.getCrDormitory().getDormitoryDetail() + ".xlsx");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		// ファイル出力
+		
+		// Excel出力
 		try {
 			outputWorkbook.write(out);
 		} catch (IOException e) {
