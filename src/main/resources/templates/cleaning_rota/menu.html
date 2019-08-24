@@ -1,48 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-<meta charset="UTF-8">
-<title>メニュー</title>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.min.css}">
-<link rel="stylesheet" href="/css/common.css" th:href="@{/css/common.css}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-</head>
-<body>
-  <div class="container">
-    <h1>メニュー</h1>
-<!--     <p> -->
-<!-- 	  <span sec:authentication="principal.user.userId">姓</span>&nbsp;<span sec:authentication="principal.user.lastname">名</span>さんログイン中。 -->
-<!-- 	</p> -->
-	<div class="col-sm-12">
-	  <div class="form-group">
-	    <div class="col-sm pull-right">
-	      <form th:action="@{/logout}" method="post">
-	        <input type="submit" class="btn btn-default btn-xs" value="ログアウト" />
-	      </form>
-	    </div>
-	  </div>
-	</div>
-    <div class="col-sm-12">
-      <div class="form-group">
-        <div class="col-sm-2">
-	      <form th:action="@{/menu/cleaning_rota}" method="post">
-   	  	    <input class="btn btn-primary btn-sm" type="submit" name="form" value="掃除当番表" />
-		  </form>
-  	    </div>
-<!--   	    <div class="col-sm-2"> -->
-<!-- 	      <form th:action="@{/menu/change_password}" method="post"> -->
-<!--    	   	    <input class="btn btn-primary btn-sm" type="submit" name="form" value="パスワード変更" /> -->
-<!-- 		  </form> -->
-<!--   	    </div> -->
-<!--   	    <div class="col-sm-2"> -->
-<!-- 	      <form th:action="@{/menu/regist_user}" method="post"> -->
-<!--    	  	    <input class="btn btn-primary btn-sm" type="submit" name="form" value="ユーザー登録" /> -->
-<!-- 		  </form> -->
-<!--   	    </div> -->
+  <head>
+    <title>メニュー</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/common.css" th:href="@{/css/common.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" th:href="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- メニュー一覧 -->
+      <h1>メニュー一覧</h1>
+      <div class="p-3 row">
+        <!-- 掃除当番表機能 -->
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <img src="/img/menu_cleaning_rota.png" alt="掃除当番表アイコン" class="img-fluid">
+            <h4 class="card-title text-center">掃除当番表</h4>
+            <div class="card-body">
+              <form th:action="@{/menu/cleaning_rota}" class="form-group d-flex justify-content-around" method="post">
+                <button type="button" class="btn btn-primary">説明</button>
+                <button type="submit" class="btn btn-primary">実行</button>
+	          </form>
+            </div>
+          </div>
+        </div>
+        <!-- /掃除当番表機能 -->
+        <!-- パスワード機能 -->
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <img src="/img/menu_password.png" alt="パスワードアイコン" class="img-fluid">
+            <h4 class="card-title text-center">パスワード</h4>
+            <div class="card-body">
+              <form th:action="@{/menu/change_password}" class="form-group d-flex justify-content-around" method="post">
+                <button type="button" class="btn btn-primary">説明</button>
+                <button type="submit" class="btn btn-primary">実行</button>
+	    	  </form>
+            </div>
+          </div>
+        </div>
+        <!-- /パスワード機能 -->
+        <!-- ログアウト機能 -->
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <img src="/img/menu_logout.png" alt="ログアウトアイコン" class="img-fluid">
+            <h4 class="card-title text-center">ログアウト</h4>
+            <div class="card-body">
+              <form th:action="@{/logout}" class="form-group d-flex justify-content-around" method="post">
+                <button type="button" class="btn btn-primary">説明</button>
+                <button type="submit" class="btn btn-primary">実行</button>
+	    	  </form>
+            </div>
+          </div>
+        </div>
+        <!-- /ログアウト機能 -->
       </div>
+      <!-- メニュー一覧 -->
+      <!-- /メニュー一覧 -->
+      <!-- 管理者メニュー一覧 -->
+      <h1>管理者メニュー一覧</h1>
+      <div class="p-3 row">
+        <!-- ユーザー登録機能 -->
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <img src="/img/menu_regist_user.png" alt="ユーザー登録アイコン" class="img-fluid">
+            <h4 class="card-title text-center">ユーザー登録</h4>
+            <div class="card-body">
+              <form th:action="@{/menu/regist_user}" class="form-group d-flex justify-content-around" method="post">
+                <button type="button" class="btn btn-primary">説明</button>
+                <!-- <button type="submit" class="btn btn-primary">実行</button> -->
+	    	  </form>
+            </div>
+          </div>
+        </div>
+        <!-- /ユーザー登録機能 -->
+      </div>
+      <!-- /管理者メニュー一覧 -->
     </div>
-  </div>
-</body>
+    <!-- TODO: ログイン情報表示 -->
+<!--     <p>
+	  <span sec:authentication="principal.user.userId">姓</span>&nbsp;<span sec:authentication="principal.user.lastname">名</span>さんログイン中。
+	</p> -->
+  </body>
 </html>

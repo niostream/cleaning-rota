@@ -28,10 +28,11 @@ public class CreateMapUtil {
 			List<CleaningRecord> cleaningRecords, CleaningRecord cleaningRecord, List<Item> items) {
 		
 		// 当月一覧日付取得
-		List<LocalDate> monthList = Stream.iterate(LocalDate.of(cleaningRecord.getExecutedDate().getYear(),
-				cleaningRecord.getExecutedDate().getMonth(), 1), d -> d.plusDays(1))
-                .limit(cleaningRecord.getExecutedDate().lengthOfMonth())
-                .collect(Collectors.toList());
+		List<LocalDate> monthList = Stream.iterate(LocalDate.of(
+				cleaningRecord.getExecutedDate().getYear(),
+				cleaningRecord.getExecutedDate().getMonth(), 1),
+				d -> d.plusDays(1)).limit(
+						cleaningRecord.getExecutedDate().lengthOfMonth()).collect(Collectors.toList());
 		
 		// 掃除当番表レコードマップ生成
 		Map<LocalDate, Map<Item, CleaningRecord>> cleaningRecordMap = new LinkedHashMap<>();

@@ -1,22 +1,16 @@
 package com.example.web;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.SecurityConfig;
 import com.example.domain.User;
 import com.example.enums.CharacterEnum;
 import com.example.service.LoginUserDetails;
@@ -29,8 +23,8 @@ public class ChangePasswordController {
 	@Autowired
 	UserService userService;
 	
-//	@Autowired
-//	PasswordEncoder passwordEncoder;
+	@Autowired
+	SecurityConfig securityConfig;
 	
 	/**
 	 * パスワード変更画面表示
@@ -47,6 +41,13 @@ public class ChangePasswordController {
 		return "cleaning_rota/change_password";
 	}
 	
+	/**
+	 * パスワード変更処理実行
+	 * @param form
+	 * @param result
+	 * @param userDetails
+	 * @return
+	 */
 	@PostMapping(path = "edit")
 	public String changePassword(@Validated ChangePasswordForm form, BindingResult result,
 			@AuthenticationPrincipal LoginUserDetails userDetails) {
@@ -58,20 +59,20 @@ public class ChangePasswordController {
 		}
 		
 		// 変更前パスワードチェック
-		PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder();
-		Optional<User> user = userService.findByUserId(userDetails.getUser().getUserId());
-		String r = passwordEncoder.encode(form.getRegisteredPassword());
-		
-//		String w = "demo";
-//		String e = passwordEncoder.encode(w);
-//		System.out.println(e);
-		
-//		String t = passwordEncoder.encode(user.get().getEncodedPassword());
-		boolean x = passwordEncoder.matches("demo", passwordEncoder.encode(user.get().getEncodedPassword()));
-//		boolean x = passwordEncoder.matches(user.get().getEncodedPassword(), passwordEncoder.encode(form.getRegisteredPassword()));
-		if (!x) {
+		if (!securityConfig.passwordEncoder().matches(form.getRegisteredPassword(),
+				userDetails.getUser().getPassword())) {
 			return "cleaning_rota/change_password";
 		}
+		
+		// 登録パスワードチェック
+		if (!form.getChangePassword().equals(form.getConfirmPassword())) {
+			return "cleaning_rota/change_password"; 
+		}
+		
+		// パスワード登録
+		User user = userDetails.getUser();
+		user.setPassword(securityConfig.passwordEncoder().encode(form.getConfirmPassword()));
+		userService.updatePasswordByUserId(user);
 			
 		return "redirect:/change_password";
 	}

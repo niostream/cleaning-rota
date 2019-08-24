@@ -31,9 +31,9 @@ public class User {
 	@Column(nullable = false)
 	private Integer deleteFlag;
 	
-	/** エンコード済みパスワード */
+	/** パスワード */
 	@Column(nullable = false)
-	private String encodedPassword;
+	private String password;
 	
 	/** 名字 */
 	@Column(nullable = false)

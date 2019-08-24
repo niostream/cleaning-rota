@@ -1,24 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>ログインフォーム</title>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap-theme.min.css}">
-<link rel="stylesheet" href="/css/common.css" th:href="@{/css/common.css}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-</head>
-<body>
-  <div class="container">
-	<h1>掃除当番表</h1>
-	<form th:action="@{/login}" class="form-signin" method="post">
-	  <h2 class="form-signin-heading">ログインフォーム</h2>
-	  <div th:if="${param.error}" class="alert alert-danger">ユーザーIDまたはパスワードが正しくありません。</div>
-	  <input type="text" class="form-control" name="user_id" placeholder="ユーザーID" required="required" autofocus="autofocus" />
-	  <input type="password" class="form-control" name="password" placeholder="パスワード" required="required" />
-	  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-	</form>
-  </div>
-</body>
+  <head>
+    <title>ログインフォーム</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/common.css" th:href="@{/css/common.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" th:href="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+  </head>
+  <body>
+    <div class="container">
+	  <h1 class="my-3 text-center">掃除当番表</h1>
+	  <!-- フォーム -->
+	  <form th:action="@{/login}" class="p-3 border border-primary rounded" method="post">
+	    <h2 class="mb-3 text-center">ログイン</h2>
+	    <div th:if="${param.error}" class="alert alert-danger">ユーザーIDまたはパスワードが正しくありません。</div>
+	    <!-- ユーザーID -->
+	    <div class="form-group row">
+	      <label for="user_id" class="col-md-3 col-form-label">ユーザーID&nbsp;<span class="badge badge-warning">必須</span></label>
+	      <div class="col-md-9">
+	        <input type="text" class="form-control" name="user_id" id="user_id" placeholder="ユーザーID" required="required" autofocus="autofocus" />
+	      </div>
+	    </div>
+	    <!-- パスワード -->
+	    <div class="form-group row">
+	      <label for="password" class="col-md-3 col-form-label">パスワード&nbsp;<span class="badge badge-warning">必須</span></label>
+	      <div class="col-md-9">
+	        <input type="password" class="form-control" name="password" id="password" placeholder="パスワード" required="required" />
+	      </div>
+	    </div>
+	    <!-- ログインボタン -->
+	    <div class="form-group row justify-content-end">
+	      <div class="col-md-9">
+	        <button class="btn btn-lg btn-primary" type="submit">Log in</button>
+	      </div>
+	    </div>
+	  </form>
+	  <!-- /フォーム -->
+    </div>
+  </body>
 </html>
